@@ -7,7 +7,11 @@
 //
 
 #import "ZCSHoldProgress.h"
-
+#define UIColorFromRGB(rgbValue) \
+[UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
+green:((float)((rgbValue & 0x00FF00) >>  8))/255.0 \
+blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 \
+alpha:1.0]
 @interface ZCSHoldProgress ()
 
 @property (nonatomic, readwrite) UIGestureRecognizerState state;
@@ -49,13 +53,12 @@
 }
 
 - (void)setDefaultValues {
-	self.displayDelay = 0.25f;
+	self.displayDelay = 0.0f;
 	self.alpha = 0.75f;
-	self.color = [UIColor blackColor];
 	self.completedColor = [UIColor greenColor];
-	self.borderSize = 3.0f;
-	self.size = 200.0f;
-	self.minimumSize = 60.0f;
+	self.borderSize = 0.0f;
+	self.size = 1800.0f;
+	self.minimumSize = 1.0f;
 	self.hideOnComplete = YES;
 }
 
@@ -122,13 +125,13 @@
 		return;
 	}
 	CGFloat size = self.size * progress;
-	if (size < self.minimumSize) size = self.minimumSize;
 	CGFloat center = (self.size / 2.0f) - (size / 2.0f);
 	self.progressLayer.cornerRadius = size / 2.0f;
 	self.progressLayer.frame = CGRectMake(center, center, size, size);
 }
 
 - (void)tearDownProgressView {
+    
 	if (self.progressView == nil) return;
 	[self.progressView removeFromSuperview];
 	self.progressView = nil;
